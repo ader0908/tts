@@ -238,12 +238,13 @@
             top: 20px;
             left: 20px;
             background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #ddd;
+            border: none;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            min-width: 200px;
+            width: auto;
+            min-width: auto;
         }
         
         .current-diagram-stats h4 {
@@ -254,16 +255,16 @@
         }
         
         .current-stats-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4px;
             align-items: center;
         }
         
         .current-stat-item {
             display: flex;
             align-items: center;
-            padding: 4px 8px;
+            padding: 2px 6px;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 4px;
             border: 1px solid #e0e0e0;
@@ -757,19 +758,41 @@
         }
 
         .entity-icon.services {
-            background: #3b82f6;
+            background: #6b7280;
         }
 
-        .entity-icon.speaker {
+        .entity-icon.services i {
+            color: white !important;
+        }
+
+        .entity-icon.speaker,
+        .entity-icon.speakers {
             background: #8b5cf6;
         }
 
-        .entity-icon.channel {
-            background: #f59e0b;
+        .entity-icon.speaker i,
+        .entity-icon.speakers i {
+            color: white !important;
         }
 
-        .entity-icon.server {
+        .entity-icon.channel,
+        .entity-icon.channels {
+            background: #eab308;
+        }
+
+        .entity-icon.channel i,
+        .entity-icon.channels i {
+            color: white !important;
+        }
+
+        .entity-icon.server,
+        .entity-icon.servers {
             background: #ef4444;
+        }
+
+        .entity-icon.server i,
+        .entity-icon.servers i {
+            color: white !important;
         }
 
         .entity-status {
@@ -1154,19 +1177,41 @@
         }
 
         .entity-icon.services {
-            background: #3b82f6;
+            background: #6b7280;
         }
 
-        .entity-icon.speaker {
+        .entity-icon.services i {
+            color: white !important;
+        }
+
+        .entity-icon.speaker,
+        .entity-icon.speakers {
             background: #8b5cf6;
         }
 
-        .entity-icon.channel {
-            background: #f59e0b;
+        .entity-icon.speaker i,
+        .entity-icon.speakers i {
+            color: white !important;
         }
 
-        .entity-icon.server {
+        .entity-icon.channel,
+        .entity-icon.channels {
+            background: #eab308;
+        }
+
+        .entity-icon.channel i,
+        .entity-icon.channels i {
+            color: white !important;
+        }
+
+        .entity-icon.server,
+        .entity-icon.servers {
             background: #ef4444;
+        }
+
+        .entity-icon.server i,
+        .entity-icon.servers i {
+            color: white !important;
         }
 
         .entity-status {
@@ -1801,14 +1846,14 @@
                             <div class="stat-total">전체 20개</div>
                             <div class="stat-connected">16개 사용 연결됨</div>
                         </div>
-                    </div>
+                            </div>
                     <div class="stat-item speaker-stat" id="stat-speaker">
                         <div class="stat-icon speaker-icon">스피커</div>
                         <div class="stat-info">
                             <div class="stat-total">전체 30개</div>
                             <div class="stat-connected">8개 사용 연결됨</div>
-                        </div>
-                    </div>
+                            </div>
+                            </div>
                     <div class="stat-item channel-stat" id="stat-channel">
                         <div class="stat-icon channel-icon">채널</div>
                         <div class="stat-info">
@@ -1851,8 +1896,8 @@
                     <span class="current-stat-label">연결선:</span>
                     <span class="current-stat-value" id="currentLinkCount">0개</span>
                 </div>
-            </div>
-        </div>
+                        </div>
+                    </div>
                     
                     <svg id="mainSvg" width="100%" height="600" viewBox="0 0 600 600" style="display: none;">
                         <!-- 배경 그리드 -->
@@ -4840,7 +4885,7 @@
                 .attr("r", 30) // 즉시 크기 설정
                 .attr("fill", d => {
                     if (d.type === 'speaker' && d.isDVS) {
-                        return '#3AEDC3'; // DVS 스피커는 연한 녹색
+                        return '#8b5cf6'; // DVS 스피커도 일반 스피커와 동일한 보라색
                     }
                     switch(d.type) {
                         case 'service': return '#6b7280';
@@ -4876,6 +4921,19 @@
                 .attr("stroke-width", "2px")
                 .attr("paint-order", "stroke")
                 .text(d => d.name); // 전체 이름 표시
+            
+            // DVS 라벨 추가 (스피커인 경우에만) - 원의 위쪽 바깥쪽에 위치
+            nodes.filter(d => d.type === 'speaker' && d.isDVS)
+                .append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", "-2.2em") // 원의 위쪽 바깥쪽에 위치 (원 반지름 30px + 여백)
+                .attr("font-size", "10px")
+                .attr("font-weight", "bold")
+                .attr("fill", "#8b5cf6") // 보라색
+                .attr("stroke", "white")
+                .attr("stroke-width", "2px")
+                .attr("paint-order", "stroke")
+                .text("DVS");
             
             // 노드 애니메이션 (먼저 실행)
             nodes.transition()
